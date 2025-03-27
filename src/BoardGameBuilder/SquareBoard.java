@@ -18,6 +18,7 @@ public abstract class SquareBoard {
         for (int i = 0; i < this.BOARD_SIZE; i++) {
             this.boardArray.add(new ArrayList<>(this.BOARD_SIZE));
             for (int j = 0; j < this.BOARD_SIZE; j++) {
+
                 this.boardArray.get(i).add(tile);
             }
         }

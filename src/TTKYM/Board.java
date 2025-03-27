@@ -6,8 +6,8 @@ import BoardGameBuilder.Tile;
 public abstract class Board extends SquareBoard {
 
 
-    protected Board(int BOARDSIZE, Tile defaultTile) {
-        super(BOARDSIZE, defaultTile);
+    protected Board() {
+        super(4, new DefaultTile());
     }
 
     public abstract void signalBoards();

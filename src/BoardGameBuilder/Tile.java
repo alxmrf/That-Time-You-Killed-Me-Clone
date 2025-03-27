@@ -6,6 +6,6 @@ public abstract class Tile {
     protected ArrayList<TileOccupant> tileOccupants;
 
     protected abstract void setPiece(TileOccupant tileOccupant);
-    public abstract TileOccupant getPiece();
+    public abstract ArrayList<TileOccupant> getPieces();
 
 }
