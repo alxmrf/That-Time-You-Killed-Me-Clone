@@ -1,57 +1,53 @@
 package TTKYM;
 
 import BoardGameBuilder.SquareBoard;
-import BoardGameBuilder.Tile;
+import TTKYM.Pieces.TileOccupants.TileOccupant;
 
-public abstract class Board extends SquareBoard {
+import java.util.ArrayList;
+
+public abstract class Board{
+    protected final Integer BOARD_SIZE = 4;
+    protected ArrayList<ArrayList<Tile>> boardArray;
 
 
     protected Board() {
-        super(4, new DefaultTile());
+        ;
     }
 
     public abstract void signalBoards();
 
-    @Override
-    public void putPieceInTile(Tile tile) {
-        int tileNumber = tile.getTileNumber();
-        int row = 0;
-        int col = 0;
-        int count = 0;
-        int offset = 0;
-        for(int i = 0; i<= tileNumber; i++) {
-            count++;
-            col++;
-            if(count > this.BOARD_SIZE){
-                offset++;
-                row++;
-                col = 0;
-                count = 1;
-            }
+
+    public void printBoard(){
+        for (int i = 0; i < this.BOARD_SIZE; i++) {
+            System.out.println(this.boardArray.get(i).toString());
         }
-        col += offset;
-        this.boardArray.get(row).add(col,tile);
     }
 
-    @Override
-    public void removePieceInTile(Tile tile) {
-        int tileNumber = tile.getTileNumber();
-        int row = 0;
-        int col = 0;
-        int count = 0;
-        int offset = 0;
-        for(int i = 0; i<= tileNumber; i++) {
-            count++;
-            col++;
-            if(count > this.BOARD_SIZE){
-                offset++;
-                row++;
-                col = 0;
-                count = 1;
+    public void putPieceInTile(int tileNumber, TileOccupant tileOccupant) {
+        for(int i = 0; i < this.BOARD_SIZE; i++) {
+            for(int j = 0; j < this.BOARD_SIZE; j++) {
+                if (this.boardArray.get(i).get(j).equals(tileOccupant)) {}
             }
         }
-        col += offset;
-        this.boardArray.get(row).remove(col);
+
+    }
+
+
+
+    private void InitializeBoardArray() {
+        this.boardArray = new ArrayList<>(this.BOARD_SIZE);
+        int counter = 0;
+        for (int i = 0; i < this.BOARD_SIZE; i++) {
+            this.boardArray.add(new ArrayList<>(this.BOARD_SIZE));
+            for (int j = 0; j < this.BOARD_SIZE; j++) {
+                this.boardArray.get(i).add(new Tile(counter));
+                counter++;
+            }
+        }
+    }
+
+    public void putPlayerInTile(Integer tileNumber) {
+
     }
 
     public void removePieceInTile(int row, int col) {

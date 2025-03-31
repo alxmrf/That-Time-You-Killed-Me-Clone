@@ -14,10 +14,16 @@ public class Game {
         this.setUpBoards();
     }
 
-    private void setUpBoards(){
+    private void LinkBoards(){
         this.futureBoard = new FutureBoard();
         this.presentBoard = new PresentBoard();
         this.pastBoard = new PastBoard();
+    }
+
+    public void SetBlackPieces() {
+
+        this.futureBoard.putPieceInTile(1);
+
 
     }
 
