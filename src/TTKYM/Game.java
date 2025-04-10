@@ -39,11 +39,28 @@ public class Game {
         this.givePiecesToPlayers();
     }
 
+
+
+
+
     /*      Handle Player Movement
     * The functions bellow are for handling the players movement, things like checking if the player
     * move was valid , or if the piece that they are trying to move are really his, see the documentation
     * of each function for more details
     * */
+
+    public void pushPlayer(Direction pushDirection,int boardPosition, Board currentBoard){
+        Tile currentTile = currentBoard.getTile(boardPosition);
+        PlayerPiece pushedPiece = currentTile.getPlayerPiece();
+        if(!(this.checkIfMovesIsInbounds(boardPosition,pushDirection))){
+            currentBoard.putPlayerPieceInTile(0,pushedPiece);
+        }
+        int newBoardPosition = boardPosition + Direction.movementValue(pushDirection);
+        currentBoard.putPlayerPieceInTile(newBoardPosition,pushedPiece);
+
+
+    }
+
 
     /*
     * Calculates which moves are valid given the pieces initial board position , for example a piece on the last
@@ -72,57 +89,94 @@ public class Game {
     private PlayerPiece tileHasPiece(Board currentBoard, int tileNumber){
         return currentBoard.getPlayerPieceInTile(tileNumber);
     }
-
     //Moves the piece from the original position to one of its adjacent squares
     //Checking if the move is valid along the way
-
     private void pushPiece(){}
+    /*
+    * returns the pawn to its parent tile without changing its original location
+    * */
+    private void returnPawnToParentTile(PlayerPiece pawn){
+        pawn.getCurrentTile().putPlayerPieceInTile(pawn);
+    }
+    /*
+    * Checks if the pawn in the tile that the player is trying to move actually pertains to the player
+    * if not the methods puts the pawn back into its current tile
+    *
+    * this function is merely a helper function to help clean the code
+    * */
+    private boolean checkPawnOwnership(PlayerPiece pawn, Player currentPlayer){
+        if (pawn.getParentBundle() == currentPlayer.getPlayerPieces()){
+            return true;
+        }
+        else {
+            System.out.println("This piece isn`t property of this player");
+            //Returns the pawn piece to its current tile to preserve its position
+            this.returnPawnToParentTile(pawn);
+            return false;
+        }
+    }
+    /*
+    * Checks if the requested movement is inside the Board`s bounds
+    * */
+    private boolean checkIfMovesIsInbounds(int boardPosition, Direction movementDirection){
+        ArrayList<Direction> validMoves= getValidMoves(boardPosition);
 
+        return validMoves.contains(movementDirection);
 
+    }
+
+    /*
+    * This functions moves a player piece from one square to another after doing all the checks to verify that
+    * said move is valid, also calls the function to push a pawn if the tile if occupied by a pawn
+    * */
     private void movePiece(int boardPosition,Player  currentPlayer,Direction movementDirection){
-
-        /*
-         *
-         * The method movePiece needs refactoring as it is too bloated and it`s structure is too hard to read
-         *
-         *
-         * */
-        //gets valid moves
-        ArrayList<Direction> validMoves = this.getValidMoves(boardPosition);
 
         //gets the board that the player making the move is focused at
         Board currentBoard  = currentPlayer.getPlayerFocus();
-
-        //Checks if the board position passed has a pawn in it
+        /*
+        * Checks if the board position passed has a pawn in it
+        * The pawn checking mechanism works by actually passing the pawn from the tile to the game class
+        * not only passing a pointer to the object, this is done to assure that the pawn will not be
+        * referenced at the same time by two parts of the program and run onto the risk of it duplicating the pawn
+        * as such with this design the pawn must be returned to a tile by the end of the computations
+        * it could be another tile or the same current tile
+        * */
         PlayerPiece pawn = this.tileHasPiece(currentBoard,boardPosition);
 
-
-
-        if (pawn!= null) {
-            if (pawn.getParentBundle() == currentPlayer.getPlayerPieces()) {
-                if (validMoves.contains(movementDirection)) {
-                    int newTile = boardPosition + Direction.movementValue(movementDirection);
-                    if(currentBoard.tileHasPlayerPiece(boardPosition)){
-                        PlayerPiece pieceToPush = currentBoard.getPlayerPieceInTile(boardPosition);
-                        if (pieceToPush instanceof Pushable){
-                            this.pushPiece();
-                        }
-                    }
-                    currentBoard.putPlayerPieceInTile(newTile, pawn);
-                }else {
-                    System.out.println(movementDirection + " is not a valid move");
-                    currentPlayer.getPlayerFocus().putPlayerPieceInTile(boardPosition, pawn);
-                }
-            }else {
-            System.out.println(pawn + " is not a piece of " + currentPlayer);
-            currentPlayer.getPlayerFocus().putPlayerPieceInTile(boardPosition, pawn);
-            }
-        }else{
-            System.out.println("No pawn found for tile " + boardPosition);
+        //Checks if there is a pawn in the selected tile
+        if (pawn == null){
+            System.out.println("There is no piece on the tile "+boardPosition);
+            return;
         }
+        if(! this.checkPawnOwnership(pawn,currentPlayer)){
+            return;
+        }
+
+        if(!checkIfMovesIsInbounds(boardPosition,movementDirection)){
+            System.out.println(movementDirection + " is not a valid move");
+            this.returnPawnToParentTile(pawn);
+            return;
+        }
+
+        int newTile = boardPosition + Direction.movementValue(movementDirection);
+
+        if(currentBoard.tileHasPlayerPiece(boardPosition)) {
+                this.pushPlayer(movementDirection,boardPosition,currentBoard);
+        }
+        currentBoard.putPlayerPieceInTile(newTile, pawn);
+
+
     }
 
-//    public void movePiece(int BoardPosition, )
+    /*
+    * End of Player movement code
+    * */
+
+
+
+
+
+
 
     private void gameLoop(){
         //Prints the game to give the player a look of the board

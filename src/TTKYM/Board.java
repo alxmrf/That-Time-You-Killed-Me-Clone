@@ -43,6 +43,16 @@ public abstract class Board {
 
     public abstract void signalBoards();
 
+    public Tile getTile(int tileNumber){
+        for (int i = 0; i < this.BOARD_SIZE; i++) {
+            for (int j = 0; j < this.BOARD_SIZE; j++) {
+                if (this.boardArray.get(i).get(j).getTileNumber() == tileNumber) {
+                    return this.boardArray.get(i).get(j);
+                }
+            }
+        }
+        return null;
+    }
 
     //put tile ocuppants inside the tile
     public void putPieceInTile(int tileNumber, TileOccupant tileOccupant) {

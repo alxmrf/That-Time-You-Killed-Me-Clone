@@ -76,7 +76,7 @@ public class Tile {
     public void putPlayerPieceInTile(PlayerPiece playerPiece) {
         System.out.println(playerPiece);
         this.playerPiece = playerPiece;
-        this.playerPiece.setParentTile(this.tileNumber);
+        this.playerPiece.setParentTile(this);
     }
 
 
