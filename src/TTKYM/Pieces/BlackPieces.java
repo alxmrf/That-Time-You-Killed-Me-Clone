@@ -2,11 +2,26 @@ package TTKYM.Pieces;
 
 import TTKYM.Pieces.Abstracts.PieceBundle;
 import TTKYM.Pieces.Abstracts.PlayerPiece;
+import TTKYM.Pieces.Abstracts.Pushable;
 
 public class BlackPieces extends PieceBundle {
+    //Singleton
+    private static BlackPieces instance = new BlackPieces();
+    public static BlackPieces getInstance(){
+        return instance;
+    }
 
-    public BlackPieces() {
-        this.istantiatePieces(new BlackPawn());
+    //Constructor
+    private BlackPieces() {
+        this.CreatePlayerPieces();
+    }
+
+    @Override
+    public void CreatePlayerPieces() {
+            for (int i = 0; i < 6; i++) {
+                BlackPawn piece = new BlackPawn(this);
+                playerPieces.add(piece);
+            };
     }
 
     @Override
@@ -20,14 +35,14 @@ public class BlackPieces extends PieceBundle {
     }
 
 
-    private class BlackPawn implements PlayerPiece {
-        private BlackPawn() {
+    private static class BlackPawn extends PlayerPiece implements Pushable {
+        private BlackPawn(PieceBundle PARENT_BUNDLE) {
+           super( PARENT_BUNDLE);
         }
 
-
         @Override
-        public PlayerPiece CreatePlayerPiece() {
-            return new BlackPawn();
+        public String  toString() {
+            return "BlackPawn";
         }
     }
 }

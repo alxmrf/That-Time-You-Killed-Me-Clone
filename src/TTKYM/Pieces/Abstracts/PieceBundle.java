@@ -1,5 +1,6 @@
 package TTKYM.Pieces.Abstracts;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.util.ArrayList;
 
 public abstract class PieceBundle {
@@ -7,14 +8,12 @@ public abstract class PieceBundle {
     protected int counter = 0;
 
 
-    protected <T extends PlayerPiece> void istantiatePieces(T prototype) {
-        for (int i = 0; i < 6; i++) {
-            @SuppressWarnings("unchecked")
-            T piece = (T) prototype.CreatePlayerPiece();
-            playerPieces.add(piece);
-        }
-    };
+    protected abstract void CreatePlayerPieces();
 
+
+    public void test(){
+        System.out.println(playerPieces);
+    }
 
     public abstract PlayerPiece getPlayerPiece();
 

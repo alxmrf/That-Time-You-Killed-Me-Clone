@@ -3,9 +3,13 @@ package TTKYM.Boards;
 import TTKYM.Board;
 
 public class PastBoard extends Board {
-    private  PresentBoard presentBoard;
-    public  PastBoard(){
+    private static PastBoard pastBoardInstance = new PastBoard();
+    private  PresentBoard presentBoard =  PresentBoard.getInstance();
 
+    private PastBoard(){
+    }
+    public static PastBoard getInstance(){
+        return pastBoardInstance;
     }
 
 
@@ -16,7 +20,4 @@ public class PastBoard extends Board {
 
     }
 
-    public void setPresentBoard(PresentBoard presentBoard) {
-        this.presentBoard = presentBoard;
-    }
 }
