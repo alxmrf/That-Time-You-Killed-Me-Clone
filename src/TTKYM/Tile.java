@@ -1,10 +1,7 @@
 package TTKYM;
 
 import TTKYM.Pieces.Abstracts.PlayerPiece;
-import TTKYM.Pieces.BlackPieces;
 import TTKYM.Pieces.TileOccupants.TileOccupant;
-
-import java.util.ArrayList;
 
 public class Tile {
     PlayerPiece playerPiece = null;
@@ -64,7 +61,11 @@ public class Tile {
 
 
     public boolean hasPlayerPiece(){
-        return (this.playerPiece != null);
+        if (this.playerPiece == null) {
+            System.out.println(this.playerPiece);
+            return false;
+        };
+        return true;
     }
 
     public PlayerPiece getPlayerPiece() {
@@ -73,9 +74,9 @@ public class Tile {
         return temp;
     }
 
-    public void putPlayerPieceInTile(PlayerPiece playerPiece) {
-        System.out.println(playerPiece);
+    public void setPlayerPiece(PlayerPiece playerPiece) {
         this.playerPiece = playerPiece;
+        System.out.println(this.playerPiece);
         this.playerPiece.setParentTile(this);
     }
 

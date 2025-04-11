@@ -72,9 +72,7 @@ public abstract class Board {
         for (int i = 0; i < this.BOARD_SIZE; i++) {
             for (int j = 0; j < this.BOARD_SIZE; j++) {
                 if (this.boardArray.get(i).get(j).getTileNumber() == tileNumber) {
-                    this.boardArray.get(i).get(j).putPlayerPieceInTile(playerPieceColor.getPlayerPiece());
-                    playerPieceColor.test();
-                    System.out.println(this.boardArray.get(i).get(j).toString());
+                    this.boardArray.get(i).get(j).setPlayerPiece(playerPieceColor.getPlayerPiece());
 
                     return;
                 }
@@ -87,7 +85,7 @@ public abstract class Board {
         for (int i = 0; i < this.BOARD_SIZE; i++) {
             for (int j = 0; j < this.BOARD_SIZE; j++) {
                 if (this.boardArray.get(i).get(j).getTileNumber() == tileNumber) {
-                    this.boardArray.get(i).get(j).putPlayerPieceInTile(playerPiece);
+                    this.boardArray.get(i).get(j).setPlayerPiece(playerPiece);
                     return;
                 }
             }
@@ -95,9 +93,11 @@ public abstract class Board {
     }
 
     public PlayerPiece getPlayerPieceInTile(int tileNumber) {
+        Tile teste;
         for (int i = 0; i < this.BOARD_SIZE; i++) {
             for (int j = 0; j < this.BOARD_SIZE; j++) {
                 if (this.boardArray.get(i).get(j).getTileNumber() == tileNumber) {
+                    teste = this.boardArray.get(i).get(j);
                     return this.boardArray.get(i).get(j).getPlayerPiece();
                 }
             }
@@ -108,7 +108,9 @@ public abstract class Board {
     public boolean tileHasPlayerPiece(int tileNumber) {
         for (int i = 0; i < this.BOARD_SIZE; i++) {
             for (int j = 0; j < this.BOARD_SIZE; j++) {
+                System.out.println("tileNumber: " + tileNumber + " " + this.boardArray.get(i).get(j).getTileNumber());
                 if (this.boardArray.get(i).get(j).getTileNumber() == tileNumber) {
+                    System.out.println(this.boardArray.get(i).get(j).hasPlayerPiece());
                     return this.boardArray.get(i).get(j).hasPlayerPiece();
                 }
             }

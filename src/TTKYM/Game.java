@@ -4,7 +4,6 @@ import TTKYM.Boards.FutureBoard;
 import TTKYM.Boards.PastBoard;
 import TTKYM.Boards.PresentBoard;
 import TTKYM.Pieces.Abstracts.PlayerPiece;
-import TTKYM.Pieces.Abstracts.Pushable;
 import TTKYM.Pieces.BlackPieces;
 import TTKYM.Pieces.WhitePieces;
 import TTKYM.Players.Player;
@@ -50,12 +49,17 @@ public class Game {
     * */
 
     public void pushPlayer(Direction pushDirection,int boardPosition, Board currentBoard){
-        Tile currentTile = currentBoard.getTile(boardPosition);
-        PlayerPiece pushedPiece = currentTile.getPlayerPiece();
+        PlayerPiece pushedPiece = currentBoard.getPlayerPieceInTile(boardPosition);
+
+        System.out.println(pushedPiece);
+
         if(!(this.checkIfMovesIsInbounds(boardPosition,pushDirection))){
+            System.out.println("bullshit");
             currentBoard.putPlayerPieceInTile(0,pushedPiece);
+            return;
         }
         int newBoardPosition = boardPosition + Direction.movementValue(pushDirection);
+        System.out.println("anything");
         currentBoard.putPlayerPieceInTile(newBoardPosition,pushedPiece);
 
 
@@ -96,7 +100,7 @@ public class Game {
     * returns the pawn to its parent tile without changing its original location
     * */
     private void returnPawnToParentTile(PlayerPiece pawn){
-        pawn.getCurrentTile().putPlayerPieceInTile(pawn);
+        pawn.getCurrentTile().setPlayerPiece(pawn);
     }
     /*
     * Checks if the pawn in the tile that the player is trying to move actually pertains to the player
@@ -160,8 +164,9 @@ public class Game {
 
         int newTile = boardPosition + Direction.movementValue(movementDirection);
 
-        if(currentBoard.tileHasPlayerPiece(boardPosition)) {
-                this.pushPlayer(movementDirection,boardPosition,currentBoard);
+        if(currentBoard.tileHasPlayerPiece(newTile)) {
+            System.out.println("ppppppp");
+            this.pushPlayer(movementDirection,newTile,currentBoard);
         }
         currentBoard.putPlayerPieceInTile(newTile, pawn);
 
@@ -218,11 +223,11 @@ public class Game {
     //Sets the player pieces in their initial positions, 3 blacks and 3 whites, one in each
     // timeline
     private void setUpPlayerPiecesInBoard() {
-        this.pastBoard.putPlayerPieceInTile(1,whitePieces);
+        this.pastBoard.putPlayerPieceInTile(2,whitePieces);
         this.presentBoard.putPlayerPieceInTile(1,whitePieces);
         this.futureBoard.putPlayerPieceInTile(1,whitePieces);
 
-        this.pastBoard.putPlayerPieceInTile(16, blackPieces);
+        this.pastBoard.putPlayerPieceInTile(1, blackPieces);
         this.presentBoard.putPlayerPieceInTile(16, blackPieces);
         this.futureBoard.putPlayerPieceInTile(16, blackPieces);
 

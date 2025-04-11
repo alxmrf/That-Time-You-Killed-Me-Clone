@@ -11,10 +11,6 @@ public abstract class PieceBundle {
     protected abstract void CreatePlayerPieces();
 
 
-    public void test(){
-        System.out.println(playerPieces);
-    }
-
     public abstract PlayerPiece getPlayerPiece();
 
 }
